@@ -1,11 +1,16 @@
 {
   description = "gke-gcloud-auth-plugin";
 
-  outputs = { self, nixpkgs }:
-    let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-    in {
-      packages.${system}.default = import ./package.nix pkgs;
-    };
+  inputs = {
+    utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs = { self, nixpkgs, utils }:
+    utils.lib.eachSystem [ utils.lib.system.x86_64-linux ] (system:
+      let 
+        pkgs = nixpkgs.legacyPackages.${system};
+      in {
+        defaultPackage = import ./package.nix pkgs;
+      }
+    );
 }
