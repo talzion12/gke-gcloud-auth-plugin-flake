@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+curl -L 'https://packages.cloud.google.com/apt/dists/cloud-sdk/main/binary-amd64/Packages' \
+  | sd -- '\nPackage: ' '---\nPackage: ' \
+  | yq --slurp 'map(select(.Package == "google-cloud-cli-gke-gcloud-auth-plugin")) | max_by(.Version)' \
+  | mustache package.nix.mustache \
+  > package.nix
