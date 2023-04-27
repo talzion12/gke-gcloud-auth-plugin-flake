@@ -1,0 +1,19 @@
+name: Update
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v20
+
+      - name: Update package.nix
+        run: |
+          ./scripts/update
+          cat package.nix
+          git status
