@@ -12,9 +12,10 @@
       in {
         defaultPackage = import ./package.nix pkgs;
         devShell = pkgs.mkShell {
-          buildInputs = [
-            pkgs.mustache-go
-            pkgs.yq
+          buildInputs = with pkgs; [
+            mustache-go
+            sd
+            yq
           ];
         };
       }

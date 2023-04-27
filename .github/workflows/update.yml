@@ -1,0 +1,56 @@
+name: Update
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v20
+        with:
+          ref: main
+
+      - id: update-package
+        name: Update package.nix
+        run: |
+          get_pkg() {
+            nix flake show --json | jq '.defaultPackage["x86_64-linux"].name' -r
+          }
+
+          pkg_before_update="$(get_pkg)"
+          
+          nix develop -c ./scripts/update
+
+          pkg_after_update="$(get_pkg)"
+          
+          if test "$pkg_before_update" == "$pkg_after_update"; then
+            echo "No update detected"
+            echo "is_update=false" >> $GITHUB_OUTPUT
+          else
+            echo "Detected update to $pkg_after_update"
+            echo "is_update=true" >> $GITHUB_OUTPUT
+            echo "pkg_after_update=$pkg_after_update" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Test
+        run: |
+          nix run . -- --version
+      
+      - name: Push
+        if: ${{ steps.update-package.outputs.is_update }}
+        run: |
+          if test -n "$(git status --porcelain)"; then
+            git config --global user.name "Github Actions"
+            git config --global user.email "actions@github.com"
+
+            git add package.nix
+            git commit -m "Updated to ${{ steps.update-package.outputs.pkg_after_update }}"
+            git push
+          fi
