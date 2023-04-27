@@ -5,8 +5,8 @@
 
 stdenv.mkDerivation rec {
   pname = "gke-gcloud-auth-plugin";
-  version = "423.0.0-0";
-  sha256 = "0d0893781be6dc8898b47f47d8a77bddea1c3e8d10611f2a9fe70ad6c8811d29";
+  version = "428.0.0-0";
+  sha256 = "3d990b66603d76307c97ebe1c270cb8b92ab4a21d39500e9c25ed0aa2255fbb3";
   arch = "amd64";
 
   # get updates from here:
@@ -21,7 +21,6 @@ stdenv.mkDerivation rec {
     ar vx ${pname}.deb
     mkdir -p $TMP/${pname}
     tar --no-overwrite-dir -xvf data.tar.xz -C $TMP/${pname}/
-    ls $TMP/${pname}/usr
   '';
 
   installPhase = ''
