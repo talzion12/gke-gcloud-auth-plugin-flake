@@ -5,8 +5,8 @@
 
 stdenv.mkDerivation rec {
   pname = "gke-gcloud-auth-plugin";
-  version = "433.0.0-0";
-  sha256 = "b493082e8bc24ed4cb5d038cabcbb0214d6b0ec98c1e715b3f631249dd0661e6";
+  version = "433.0.1-0";
+  sha256 = "1ca8e3c4110f357435b1c726d9ca05ca8e6455d702967317f73ac626d73f2b48";
   arch = "amd64";
 
   # get updates from here:
