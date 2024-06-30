@@ -7,12 +7,13 @@ stdenv.mkDerivation rec {
   pname = "gke-gcloud-auth-plugin";
   version = "{{Version}}";
   sha256 = "{{SHA256}}";
+  md5sum = "{{MD5sum}}";
   arch = "{{Architecture}}";
 
   # get updates from here:
   # https://packages.cloud.google.com/apt/dists/cloud-sdk/main/binary-amd64/Packages
   src = fetchurl {
-    url = "https://packages.cloud.google.com/apt/pool/google-cloud-cli-gke-gcloud-auth-plugin_${version}_${arch}_${sha256}.deb";
+    url = "https://packages.cloud.google.com/apt/pool/cloud-sdk/google-cloud-cli-gke-gcloud-auth-plugin_${version}_${arch}_${md5sum}.deb";
     sha256 = sha256;
   };
 
